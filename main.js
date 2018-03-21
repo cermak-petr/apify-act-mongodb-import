@@ -1,4 +1,5 @@
 const Apify = require('apify');
+const request = require('request-promise');
 const MongoClient = require('mongodb').MongoClient;
 const _ = require('underscore');
 
