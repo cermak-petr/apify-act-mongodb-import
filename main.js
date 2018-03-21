@@ -51,16 +51,19 @@ Apify.main(async () => {
     const uniqueKeys = input.uniqueKeys;
     const timestampAttr = input.timestampAttr;
     
-    if (input.transformFunction) {
-        eval(input.transformFunction);
+    if (input.transformSript) {
+        eval(input.transformScript);
         if (typeof transform != 'function') {
             throw new Error('Transform function is not correctly defined! Please consult readme.');
         }
     }
 
+    const beforeProcess = (typeof beforeImport === 'function') ? beforeImport : (() => {});
     const processObject = (typeof transform === 'function') ? transform : (object => object);
+    const afterProcess = (typeof afterImport === 'function') ? afterImport : (() => {});
     
     if (input.imports) {
+        await beforeProcess();
         // Import objects from input.objectsToImport
         if (input.imports.plainObjects && Array.isArray(input.imports.plainObjects)) {
             for (const object of input.imports.plainObjects) {
@@ -87,6 +90,7 @@ Apify.main(async () => {
                 }
             }
         }
+        await afterProcess();
     } else {
         throw new Error('no objects to import!');
     }
