@@ -51,7 +51,7 @@ Apify.main(async () => {
     const uniqueKeys = input.uniqueKeys;
     const timestampAttr = input.timestampAttr;
     
-    if (input.transformSript) {
+    if (input.transformScript) {
         eval(input.transformScript);
         if (typeof transform != 'function') {
             throw new Error('Transform function is not correctly defined! Please consult readme.');
