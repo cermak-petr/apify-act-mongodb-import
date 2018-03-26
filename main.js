@@ -8,14 +8,11 @@ const sleepPromised = ms => new Promise(resolve => setTimeout(resolve, ms));
 const loadItems = async (datasetId, process, offset) => {  
     const limit = 10000;
     if(!offset){offset = 0;}
-    console.log('starting to load from dataset');
     const newItems = await Apify.client.datasets.getItems({
         datasetId, 
         offset,
         limit
     });
-    console.log('loaded from dataset ' + datasetId + ': ');
-    console.dir(newItems);
     if(newItems && (newItems.length || newItems.items.length)){
         if(newItems.length){await process(newItems);}
         else if(newItems.items && newItems.items.length){await process(newItems);}
