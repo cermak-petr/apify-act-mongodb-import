@@ -13,7 +13,7 @@ const loadItems = async (datasetId, process, offset) => {
         offset,
         limit
     });
-    if(newItems && (newItems.length || newItems.items.length)){
+    if(newItems && (newItems.length || (newItems.items && newItems.items.length))){
         if(newItems.length){await process(newItems);}
         else if(newItems.items && newItems.items.length){await process(newItems);}
         await loadItems(datasetId, process, offset + limit);
