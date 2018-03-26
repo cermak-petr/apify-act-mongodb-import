@@ -108,7 +108,7 @@ Apify.main(async () => {
         }
         // Import objects from Apify dataset
         if (input.imports.objectsFromDs && input.imports.objectsFromDs.datasetId) {
-            const storeId = input.imports.objectsFromDs.datasetId;
+            const datasetId = input.imports.objectsFromDs.datasetId;
             await loadItems(datasetId, async (objects) => {
                 for (const object of objects) {
                     const newObject = await processObject(object);
