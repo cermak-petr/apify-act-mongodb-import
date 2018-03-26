@@ -6,7 +6,7 @@ const _ = require('underscore');
 const sleepPromised = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const loadItems = async (datasetId, process, offset) => {  
-    const limit = 100000;
+    const limit = 10000;
     if(!offset){offset = 0;}
     console.log('starting to load from dataset');
     const newItems = await Apify.client.datasets.getItems({
