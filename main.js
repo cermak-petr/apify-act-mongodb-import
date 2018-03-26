@@ -5,6 +5,21 @@ const _ = require('underscore');
 
 const sleepPromised = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+const loadItems = async (datasetId, process, offset) => {  
+    const limit = 100000;
+    if(!offset){offset = 0;}
+    console.log('starting to load from dataset');
+    const newItems = await Apify.client.datasets.getItems({
+        datasetId, 
+        offset,
+        limit
+    });
+    if(newItems && newItems.items && newItems.items.length > 0){
+        await process(newItems.items);
+        await loadItems(datasetId, process, offset + limit);
+    }
+};
+
 const importObjectToCollection = async (collection, object, importStats, uniqueKeys, timestampAttr) => {
     try {
         if (timestampAttr) {
@@ -74,7 +89,7 @@ Apify.main(async () => {
                 }
             }
         }
-        // Import object from Apify kvs
+        // Import objects from Apify kvs
         if (input.imports.objectsFromKvs && input.imports.objectsFromKvs.storeId && input.imports.objectsFromKvs.keys && Array.isArray(input.imports.objectsFromKvs.keys)) {
             const storeId = input.imports.objectsFromKvs.storeId;
             for (const key of input.imports.objectsFromKvs.keys) {
@@ -90,6 +105,18 @@ Apify.main(async () => {
                     }
                 }
             }
+        }
+        // Import objects from Apify dataset
+        if (input.imports.objectsFromDs && input.imports.objectsFromDs.datasetId) {
+            const storeId = input.imports.objectsFromDs.datasetId;
+            await loadItems(datasetId, async (objects) => {
+                for (const object of objects) {
+                    const newObject = await processObject(object);
+                    if (newObject !== undefined) {
+                        await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);
+                    }
+                }
+            });
         }
         await afterProcess();
     } else {
