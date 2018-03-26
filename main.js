@@ -14,7 +14,8 @@ const loadItems = async (datasetId, process, offset) => {
         offset,
         limit
     });
-    console.dir('loaded from dataset ' + datasetId + ': ' + newItems);
+    console.log('loaded from dataset ' + datasetId + ': ');
+    console.dir(newItems);
     if(newItems && newItems.items && newItems.items.length > 0){
         await process(newItems.items);
         await loadItems(datasetId, process, offset + limit);
