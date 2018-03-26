@@ -15,6 +15,7 @@ const loadItems = async (datasetId, process, offset) => {
         limit
     });
     if(newItems && newItems.items && newItems.items.length > 0){
+        console.log('loaded from dataset: ' + newItems.items.length);
         await process(newItems.items);
         await loadItems(datasetId, process, offset + limit);
     }
