@@ -116,7 +116,7 @@ Apify.main(async () => {
             await loadItems(datasetId, async (objects) => {
                 for (const object of objects) {
                     const newObject = await processObject(object);
-                    if (newObject !== undefined) {
+                    if (collection && newObject !== undefined) {
                         await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);
                     }
                 }
