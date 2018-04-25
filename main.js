@@ -51,11 +51,15 @@ Apify.main(async () => {
 
     const mongoUrl = process.env.MONGO_URL || input.mongoUrl;
     if (!mongoUrl) throw new Error('mongoUrl is missing!');
-
+    
+    let collection = null;
     const collectionName = input.collection || 'results';
 
-    const db = await MongoClient.connect(mongoUrl);
-    const collection = await db.collection(collectionName);
+    try{
+        const db = await MongoClient.connect(mongoUrl);
+        collection = await db.collection(collectionName);
+    }
+    catch(e){console.log(e);}
 
     // Import
     const importStats = {
@@ -84,7 +88,7 @@ Apify.main(async () => {
         if (input.imports.plainObjects && Array.isArray(input.imports.plainObjects)) {
             for (const object of input.imports.plainObjects) {
                 const newObject = await processObject(object);
-                if (newObject !== undefined) {
+                if (collection && newObject !== undefined) {
                     await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);
                 }
             }
@@ -100,7 +104,7 @@ Apify.main(async () => {
                 }
                 for (const object of objectsRecord.body) {
                     const newObject = await processObject(object);
-                    if (newObject !== undefined) {
+                    if (collection && newObject !== undefined) {
                         await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);
                     }
                 }
