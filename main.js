@@ -15,7 +15,7 @@ const loadItems = async (datasetId, process, offset) => {
     });
     if(newItems && (newItems.length || (newItems.items && newItems.items.length))){
         if(newItems.length){await process(newItems);}
-        else if(newItems.items && newItems.items.length){await process(newItems);}
+        else if(newItems.items && newItems.items.length){await process(newItems.items);}
         await loadItems(datasetId, process, offset + limit);
     }
 };
