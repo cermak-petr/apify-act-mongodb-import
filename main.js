@@ -38,6 +38,7 @@ const importObjectToCollection = async (collection, object, importStats, uniqueK
             await collection.insert(object);
             importStats.imported++;
         }
+        console.log('Object imported: ' + JSON.stringify(object));
     } catch (err) {
         importStats.failed++;
         console.log(`Cannot import object ${JSON.stringify(object)}: ${err.message}`);
