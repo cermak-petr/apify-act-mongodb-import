@@ -1,3 +1,4 @@
+const md5 = require('md5');
 const Apify = require('apify');
 const request = require('request-promise');
 const MongoClient = require('mongodb').MongoClient;
