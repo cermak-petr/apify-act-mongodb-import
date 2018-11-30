@@ -91,7 +91,8 @@ Apify.main(async () => {
             for (const object of input.imports.plainObjects) {
                 const newObject = await processObject(object);
                 if (collection && newObject !== undefined) {
-                    await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);
+                    if(input.debug){console.log('DEBUG: Object imported: ' + JSON.stringify(newObject));}
+                    else{await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);}
                 }
             }
         }
@@ -107,7 +108,8 @@ Apify.main(async () => {
                 for (const object of objectsRecord.body) {
                     const newObject = await processObject(object);
                     if (collection && newObject !== undefined) {
-                        await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);
+                        if(input.debug){console.log('DEBUG: Object imported: ' + JSON.stringify(newObject));}
+                        else{await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);}
                     }
                 }
             }
@@ -119,7 +121,8 @@ Apify.main(async () => {
                 for (const object of objects) {
                     const newObject = await processObject(object);
                     if (collection && newObject !== undefined) {
-                        await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);
+                        if(input.debug){console.log('DEBUG: Object imported: ' + JSON.stringify(newObject));}
+                        else{await importObjectToCollection(collection, newObject, importStats, uniqueKeys, timestampAttr);}
                     }
                 }
             });
